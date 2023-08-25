@@ -10,8 +10,8 @@ declare function initEShop([]):any;
 })
 export class HomeComponent implements OnInit {
   ngOnInit() :void{
-    setTimeout(() => {
-      initEShop($)
-    }, 50);
+    initEShop($)
+    /*setTimeout(() => {
+    }, 50);*/
   }
 }

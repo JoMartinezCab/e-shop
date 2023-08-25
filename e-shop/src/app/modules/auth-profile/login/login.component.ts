@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { AuthService } from '../_services/auth.service';
 import { Router } from '@angular/router';
 
@@ -7,13 +7,19 @@ import { Router } from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
 
   public user:any;
   public email:string = '';
   public password:string = '';
 
   constructor(private authService:AuthService, private router:Router){}
+
+  ngOnInit(): void {
+    if(this.authService.user && this.authService.token){
+      this.router.navigate(['/']);
+    }
+  }
 
   login():void{
     if(!this.email || !this.password){

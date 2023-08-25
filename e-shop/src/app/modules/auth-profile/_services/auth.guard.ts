@@ -2,7 +2,7 @@ import { inject } from '@angular/core';
 import { ActivatedRouteSnapshot, CanActivateFn, Router, RouterStateSnapshot } from '@angular/router';
 import { AuthService } from './auth.service';
 
-let router:Router;
+// let router:Router;
 
 export const authGuard: CanActivateFn = (
   route : ActivatedRouteSnapshot,
@@ -11,19 +11,16 @@ export const authGuard: CanActivateFn = (
   /**
    * Se injecta la dependencia
    */
+  const router = inject(Router);
   const authService = inject(AuthService);
 
-  if(!authService.user && !authService.token){
-    router.navigate(['auth/login']);
-    return false;
-  }
+  if(authService.user && authService.token){
+    const isExpiredToken = authService.expiredToken();
 
-  let token = authService.token;
-  let expiracion = (JSON.parse(atob(token.split('.')[1]))).exp;
-
-  if(Math.floor((new Date).getTime() / 1000) >= expiracion){
-    authService.logout();
-    return false;
+    if(isExpiredToken){
+      authService.logout();
+      return false;
+    }
   }
 
   return true;

@@ -24,8 +24,9 @@ export class AuthService {
 
   login(email: string, password:string){
     let URL= `${URL_SERVCIOS}/auth/login`;
+    let platform = 1;
 
-    return this.http.post(URL, {email, password}).pipe(
+    return this.http.post(URL, {email, password, platform}).pipe(
       map((auth:any) =>{
         return this.saveLocalStorageResponse(auth)
       }),
@@ -44,6 +45,7 @@ export class AuthService {
   logout(){
     this.user = null;
     this.token = '';
+
     localStorage.removeItem('token');
     localStorage.removeItem('user');
 
@@ -90,5 +92,12 @@ export class AuthService {
     }
 
     return true;
+  }
+
+  expiredToken(){
+    const expiry = (JSON.parse(atob(this.token.split('.')[1]))).exp;
+
+    return Math.floor((new Date).getTime() / 1000) >= expiry;
+
   }
 }

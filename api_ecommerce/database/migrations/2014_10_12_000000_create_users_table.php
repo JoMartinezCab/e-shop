@@ -15,8 +15,16 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->tinyInteger('type_user')
+                  ->default(1)
+                  ->comment('1 = cliente de ecommerce / 2 = usuario admin')
+                  ->unsigned();
+            $table->bigInteger('role_id')->nullable(true);
+            $table->tinyInteger('state')
+                  ->default(1)
+                  ->comment('1 = cliente activo / 2 = cliente desactivado')
+                  ->unsigned();
             $table->rememberToken();
             $table->timestamps();
         });

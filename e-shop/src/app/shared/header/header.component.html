@@ -495,15 +495,15 @@
                       <span class="icon">
                          <i class="icon-user-line"></i>
                       </span>
-                      <span *ngIf="user; else account" class="icon_text">{{ user.name }}</span>
+                      <span *ngIf="!user; else account" class="icon_text">Account</span>
                       <ng-template #account>
-                        <span class="icon_text">Account</span>
+                        <span class="icon_text">{{ user.name }}</span>
                       </ng-template>
                   </a>
                   <div class="myacc_cont">
                       <div class="ac_join">
                           <p>Welcome to RAFCART Shop</p>
-                          <div class="account_btn d-flex justify-content-between">
+                          <div *ngIf="!user" class="account_btn d-flex justify-content-between">
                              <a routerLink="/auth/register" class="default_btn">Join</a>
                               <a routerLink="/auth/login" class="default_btn second">Sing in</a>
                           </div>

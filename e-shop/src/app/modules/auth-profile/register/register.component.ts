@@ -18,6 +18,12 @@ export class RegisterComponent {
     private router:Router,
     private authService:AuthService){}
 
+  ngOnInit(): void {
+    if(this.authService.user && this.authService.token){
+      this.router.navigate(['/']);
+    }
+  }
+
   register(){
     let data = {
       name: this.name,

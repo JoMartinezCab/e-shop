@@ -8,6 +8,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\UserStoreRequest;
 
 class AuthController extends Controller{
      /**
@@ -24,18 +25,9 @@ class AuthController extends Controller{
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request)
-    {
+    public function register(UserStoreRequest $request){
 
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|min:2|max:100',
-            'email' => 'required|string|email|max:100|unique:users',
-            'password' => 'required|string|min:6',
-        ]);
-
-        if($validator->fails()) {
-            return response()->json($validator->errors(), 400);
-        }
+        $request->validated();
 
         $user = User::create([
             'name' => $request->name,
@@ -54,10 +46,17 @@ class AuthController extends Controller{
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(){
-        $credentials = request(['email', 'password']);
+    public function login(Request $request){
 
-        if (! $token = auth('api')->attempt($credentials)) {
+        $data = [
+            'email' => $request->email,
+            'password' => $request->password,
+            'state' => 1,
+        ];
+
+        if($request->platform == 2) $data['type_user'] = $request->platform;
+
+        if (! $token = auth('api')->attempt($data)) {
             return response()->json(['error' => 'Unauthorized'], 401);
         }
 
@@ -101,11 +100,17 @@ class AuthController extends Controller{
      * @return \Illuminate\Http\JsonResponse
      */
     protected function respondWithToken($token){
+        $user = auth('api')->user();
+
         return response()->json([
             'access_token' => $token,
             'token_type' => 'bearer',
             'expires_in' => auth('api')->factory()->getTTL() * 60,
-            'user' => auth('api')->user()
+            'user' => [
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role,
+            ]
         ]);
     }
 }

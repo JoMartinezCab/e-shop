@@ -21,6 +21,9 @@ class User extends Authenticatable implements JWTSubject
         'name',
         'email',
         'password',
+        'type_user',
+        'state',
+        'role_id'
     ];
 
     /**
@@ -39,9 +42,12 @@ class User extends Authenticatable implements JWTSubject
      * @var array<string, string>
      */
     protected $casts = [
-        'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function role(){
+        return $this->belongsTo(Role::class);
+    }
 
     public function getJWTIdentifier(){
         return $this->getKey();

@@ -60,9 +60,10 @@ export class AuthService implements OnDestroy {
   
   login(email: string, password: string) {
     let url = `${URL_SERVICIOS}/auth/login`;
+    let platform = 2;
     this.isLoadingSubject.next(true);
 
-    return this.http.post(url,{email, password}).pipe(
+    return this.http.post(url,{email, password, platform}).pipe(
       map((auth: any) => {
         console.log(auth)
         return (auth.access_token)? this.setAuthFromLocalStorage(auth): auth;
