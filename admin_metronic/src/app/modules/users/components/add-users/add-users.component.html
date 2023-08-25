@@ -20,7 +20,20 @@
         </ng-container>
 
         <form action="#" class="form form-label-right" [formGroup]="formGroup">
-            
+            <div class="form-group row">
+                <div class="col-lg-6">
+                    <label class="form-label">Nombre</label>
+                    <input type="text" 
+                    name="name"
+                    placeholder="Ingrese nombre completo"
+                    autocomplete="off"
+                    formControlName="name"
+                    [class.is-invalid]="isControlInvalid('name')"
+                    [class.is-valid]="isControlvalid('name')"
+                    class="form-control form-control-solid control-lg">
+                </div>
+                <div class="col-lg-6"></div>
+            </div>       
         </form>
     </div>
 

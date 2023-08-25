@@ -13,12 +13,12 @@ export class AddUsersComponent implements OnInit {
   isLoading$;
   isLoading = false; 
   
-  formGroup = FormGroup;
+  formGroup: FormGroup;
 
   constructor(
     private fb:FormBuilder,
     private usersService:UsersService,
-    private modal:NgbActiveModal
+    public modal:NgbActiveModal
   ) { }
 
   ngOnInit(): void {
@@ -37,8 +37,7 @@ export class AddUsersComponent implements OnInit {
         Validators.required, 
         Validators.email,
         Validators.maxLength(249)
-      ])],
-      role: [1],
+      ])],      
       password: [null, Validators.compose([
         Validators.required, 
         Validators.minLength(6),
@@ -48,7 +47,8 @@ export class AddUsersComponent implements OnInit {
         Validators.required, 
         Validators.minLength(6),
         Validators.maxLength(249)
-      ])]      
+      ])],
+      role: [1],      
     });
   }
 

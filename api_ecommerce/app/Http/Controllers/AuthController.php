@@ -29,6 +29,10 @@ class AuthController extends Controller{
 
         $request->validated();
 
+        $user = User::where('email', $request->email)->first();
+
+        if($user) return response()->json(["messge" => 400]);
+
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
